@@ -36,6 +36,7 @@ The application allows users to analyze URLs in real time using a Machine Learni
 ### Frontend
 - HTML
 - CSS
+- JavaScript
 
 ---
 
