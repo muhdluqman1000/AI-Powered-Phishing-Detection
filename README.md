@@ -39,24 +39,6 @@ The application allows users to analyze URLs in real time using a Machine Learni
 
 ---
 
-## Project Structure
-
-```
-phishing_project/
-│
-├── app.py
-├── database.py
-├── feature_extraction.py
-├── whois_lookup.py
-├── phishing_model.pkl
-├── scan_results.db
-├── requirements.txt
-├── static/
-└── templates/
-```
-
----
-
 ## Installation
 
 ### Clone the repository
