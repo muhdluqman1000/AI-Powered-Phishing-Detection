@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PhishScope</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="logo-area">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo">
+            <strong>PhishScope</strong>
+        </div>
+
+        <div>
+            <a href="/">Scan</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/history">History</a>
+        </div>
+    </div>
+
+    <div class="page-content">
+
+        <div class="scan-container">
+
+            <div class="scan-header">
+                <h1>Real-Time URL Phishing Analysis</h1>
+                <p>Enter a URL to check whether it is phishing or legitimate.</p>
+            </div>
+
+            <form method="POST" class="scan-form">
+                <input type="text" name="url" placeholder="https://example.com" required>
+                <button type="submit">Scan URL</button>
+            </form>
+
+            <div class="card how-it-works">
+                <h3>How It Works</h3>
+
+                <p>• <strong>Machine Learning Classification:</strong> Uses trained models to analyze URL patterns and characteristics</p>
+                <p>• <strong>WHOIS Domain Intelligence Integration:</strong> Retrieves domain registration and ownership information</p>
+                <p>• <strong>Real-Time Detection:</strong> Instant analysis and classification of submitted URLs</p>
+            </div>
+
+            {% if result %}
+
+            <div class="card result-box {% if result == 'Phishing' %}result-phishing{% else %}result-legitimate{% endif %}">
+
+                <h2>Scan Result</h2>
+
+                <p><strong>URL:</strong> {{ url }}</p>
+
+                <p>
+                    <strong>Result:</strong>
+
+                    {% if result == "Phishing" %}
+                        <span class="badge phishing">Phishing</span>
+                    {% else %}
+                        <span class="badge legitimate">Legitimate</span>
+                    {% endif %}
+                </p>
+
+                <p><strong>Confidence:</strong> {{ confidence }}%</p>
+
+                <h3>WHOIS Information</h3>
+
+                <div class="whois-grid">
+
+                    <div class="whois-item">
+                        <strong>Registrar</strong><br>
+                        {{ whois_info.registrar }}
+                    </div>
+
+                    <div class="whois-item">
+                        <strong>Country</strong><br>
+                        {{ whois_info.country }}
+                    </div>
+
+                    <div class="whois-item">
+                        <strong>Creation Date</strong><br>
+                        {{ whois_info.creation_date }}
+                    </div>
+
+                    <div class="whois-item">
+                        <strong>Expiry Date</strong><br>
+                        {{ whois_info.expiry_date }}
+                    </div>
+
+                    <div class="whois-item">
+                        <strong>Domain Age</strong><br>
+                        {{ whois_info.domain_age }} days
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <strong>PhishScope</strong><br>
+        © 2026 All rights reserved.
+    </div>
+
+</body>
+
+</html>

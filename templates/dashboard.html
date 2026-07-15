@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PhishScope Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <div class="logo-area">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo">
+            <strong>PhishScope</strong>
+        </div>
+
+        <div>
+            <a href="/">Scan</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/history">History</a>
+        </div>
+
+    </div>
+
+    <div class="page-content">
+
+        <div class="dashboard-container">
+
+            <h1 class="dashboard-title">Threat Intelligence Dashboard</h1>
+
+            <div class="stats">
+
+                <div class="stat-card">
+                    <h2>{{ total_scans }}</h2>
+                    <p>Total URLs Scanned</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2>{{ total_phishing }}</h2>
+                    <p>Phishing Detected</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2>{{ total_legitimate }}</h2>
+                    <p>Legitimate URLs</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2>{{ average_confidence }}%</h2>
+                    <p>Average Confidence</p>
+                </div>
+
+            </div>
+
+            <div class="dashboard-grid">
+
+                <div class="card">
+
+                    <h2>Phishing vs Legitimate Distribution</h2>
+
+                    <div class="chart-box">
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <h2>Phishing Detection Timeline</h2>
+
+                    <div class="chart-box">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card recent-table">
+
+                <h2>Recent Scan History</h2>
+
+                <table>
+
+                    <tr>
+                        <th>URL</th>
+                        <th>Result</th>
+                        <th>Confidence</th>
+                    </tr>
+
+                    {% for scan in recent_scans %}
+
+                    <tr>
+
+                        <td>{{ scan[1] }}</td>
+
+                        <td>
+                            {% if scan[3] == "Phishing" %}
+                                <span class="badge phishing">Phishing</span>
+                            {% else %}
+                                <span class="badge legitimate">Legitimate</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ scan[4] }}%</td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <strong>PhishScope</strong><br>
+        © 2026 All rights reserved.
+    </div>
+
+    <script>
+
+        const ctx = document.getElementById('distributionChart');
+
+        new Chart(ctx, {
+            type: 'pie',
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+
+            data: {
+                labels: ['Phishing', 'Legitimate'],
+
+                datasets: [{
+                    data: [
+                        {{ phishing_count }},
+                        {{ legitimate_count }}
+                    ],
+
+                    backgroundColor: [
+                        '#dc2626',
+                        '#16a34a'
+                    ]
+                }]
+            }
+        });
+
+    </script>
+
+    <script>
+
+        const timelineCtx = document.getElementById('timelineChart');
+
+        new Chart(timelineCtx, {
+            type: 'bar',
+
+            data: {
+                labels: {{ timeline_labels | tojson }},
+
+                datasets: [{
+                    label: 'Phishing Detections',
+                    data: {{ timeline_values | tojson }},
+                    backgroundColor: '#dc2626'
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PhishScope History</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <div class="logo-area">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo">
+            <strong>PhishScope</strong>
+        </div>
+
+        <div>
+            <a href="/">Scan</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/history">History</a>
+        </div>
+
+    </div>
+
+    <div class="page-content">
+
+        <div class="dashboard-container">
+
+            <h1 class="dashboard-title">Scan History</h1>
+
+            <div class="card recent-table">
+
+                <table>
+
+                    <tr>
+                        <th>URL</th>
+                        <th>Result</th>
+                        <th>Confidence</th>
+                        <th>Registrar</th>
+                        <th>Country</th>
+                        <th>Domain Age</th>
+                        <th>Scan Time</th>
+                    </tr>
+
+                    {% for scan in scans %}
+
+                    <tr>
+
+                        <td>{{ scan[0] }}</td>
+
+                        <td>
+                            {% if scan[1] == "Phishing" %}
+                                <span class="badge phishing">Phishing</span>
+                            {% else %}
+                                <span class="badge legitimate">Legitimate</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ scan[2] }}%</td>
+                        <td>{{ scan[3] }}</td>
+                        <td>{{ scan[4] }}</td>
+                        <td>{{ scan[5] }}</td>
+                        <td>{{ scan[6] }}</td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <strong>PhishScope</strong><br>
+        © 2026 All rights reserved.
+    </div>
+
+</body>
+
+</html>
