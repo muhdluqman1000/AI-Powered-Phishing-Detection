@@ -113,15 +113,6 @@ The model performs feature extraction from URLs before generating a prediction u
 
 ---
 
-## Future Improvements
-
-- Support additional Machine Learning models
-- Real-time threat intelligence integration
-- User authentication
-- API version for external integrations
-
----
-
 ## Author
 
 Muhammad Luqman bin Abdul Ghafar
